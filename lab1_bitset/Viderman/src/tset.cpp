@@ -6,12 +6,12 @@
 // Множество - реализация через битовые поля
 
 #include "tset.h"
-using namespace std;
+
 
 // Конструктор с максимальной мощностью множества
 TSet::TSet(int mp) : BitField(mp)
 {
-    if (mp < 0) throw ("Отрицательная длина");
+    if (mp < 0) throw std::invalid_argument("Отрицательная длина");
     MaxPower = mp;
 }
 
@@ -86,7 +86,7 @@ int TSet::operator!=(const TSet& s) const
 // Объединение множеств
 TSet TSet::operator+(const TSet& s)
 {
-    int maxPower = max(MaxPower, s.MaxPower);
+    int maxPower = std::max(MaxPower, s.MaxPower);
     TSet result(maxPower);
     result.BitField = BitField | s.BitField;
     return result;
@@ -113,7 +113,7 @@ TSet TSet::operator-(const int Elem)
 // Пересечение множеств
 TSet TSet::operator*(const TSet& s)
 {
-    int maxPower = max(MaxPower, s.MaxPower);
+    int maxPower = std::max(MaxPower, s.MaxPower);
     TSet result(maxPower);
     result.BitField = BitField & s.BitField;
     return result;
@@ -144,14 +144,12 @@ istream& operator>>(istream& istr, TSet& s)
 // Перегрузка вывода
 ostream& operator<<(ostream& ostr, const TSet& s)
 {
-    ostr << "{ ";
     for (int i = 0; i < s.MaxPower; i++)
     {
         if (s.IsMember(i))
         {
-            ostr << i << " ";
+            ostr << i;
         }
     }
-    ostr << "}";
     return ostr;
 }
